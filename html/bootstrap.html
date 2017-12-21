@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" href="../css/bootstrap.css"/>
+    <script src="../js/jquery-3.2.1.min.js"></script>
+    <script src="../js/bootstrap.js"></script>
+</head>
+<body>
+<!--<form action="">-->
+    <!--<input type="number" required/>-->
+    <!--<input type="submit"/>-->
+<!--</form>-->
+
+
+<div class="container">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">购物车</h3>
+
+
+        </div>
+        <div class="panel-body">
+            <div class="bs-example" data-example-id="bordered-table">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>编号</th>
+                        <th>产品名称</th>
+                        <th>单价</th>
+                        <th>数量</th>
+                        <th>总价</th>
+                        <th>移除</th>
+                    </tr>
+                    </thead>
+                    <tbody id="content">
+                    <!--<tr>-->
+                        <!--<th scope="row">1</th>-->
+                        <!--<td>iPhone4</td>-->
+                        <!--<td>iPhone4</td>-->
+                        <!--<td>-->
+                            <!--<button type="button" class="btn btn-success">-</button>-->
+                            <!--<button type="button" class="btn btn-default" disabled>0</button>-->
+                            <!--<button type="button" class="btn btn-success">+</button>-->
+                        <!--</td>-->
+                        <!--<td>@iPhone4</td>-->
+                        <!--<td>-->
+                            <!--<button type="button" class="btn btn-danger">移除</button>-->
+                        <!--</td>-->
+                    <!--</tr>-->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+</body>
+
+
+<script>
+//    (function(){
+        var list =[
+            {name:'iphone4',price:1000},
+            {name:'iphone5',price:2000},
+            {name:'iphone6',price:3000},
+            {name:'iphone7',price:4000}
+        ];
+
+        var content =document.querySelector("#content");
+
+        list.forEach(function(item,index){
+            var newEle=`<tr class="hahaha">
+                        <th scope="row">${index+1}</th>
+                        <td>${item.name}</td>
+                        <td class="single">${item.price}</td>
+                        <td>
+                            <button type="button" class="btn btn-success" onclick="reduce(${index})">-</button>
+                            <button type="button" class="btn btn-default" disabled>0</button>
+                            <button type="button" class="btn btn-success" onclick="add(${index})">+</button>
+                        </td>
+                        <td class="sum">0</td>
+                        <td>
+                            <button type="button" class="btn btn-danger" onclick="removeOne(this)" index="${index}">移除</button>
+                        </td>
+                    </tr>`;
+           content.innerHTML +=newEle;
+        });
+
+        //移除
+        function removeOne(target){
+            var sum = target.parentNode.parentNode;
+            content.removeChild(sum);
+            return;
+        }
+
+        //增加
+        function add(index){
+           var num =document.querySelectorAll(".btn-default")[index];
+           num.innerText =parseInt(num.innerText)+1;
+            var single =document.querySelectorAll(".single")[index].innerText;
+            var sum =parseInt(single)*parseInt(num.innerText);
+            document.querySelectorAll(".sum")[index].innerText =sum;
+            total();
+        }
+
+        function reduce(index){
+            var num =document.querySelectorAll(".btn-default")[index];
+            if(num.innerText == 0){
+                if(confirm("确认删除？")){
+                    var str= document.querySelectorAll(".hahaha")[index];
+//                    console.log(str);
+                    document.querySelector("#content").removeChild(str);
+                    return;
+                }
+            }
+            num.innerText =parseInt(num.innerText)-1;
+            var single =document.querySelectorAll(".single")[index].innerText;
+            var sum =parseInt(single)*parseInt(num.innerText);
+            document.querySelectorAll(".sum")[index].innerText =sum;
+            total();
+        }
+
+        function total(){
+            var sum =document.querySelectorAll(".sum");
+            var number =0;
+            sum.forEach(function(item,index){
+                number += parseInt(item.innerText)
+
+            });
+            console.log(number)
+        }
+
+//    })()
+</script>
+</html>
